@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finished</title>
+    <style>
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #000;
+        }
+
+        :root {
+            --secondary-color: #FFFFFF;
+            --primary-color: #F5F8FC;
+            --primary-accent-color: #1966D2;
+            --primary-text-color: #000000;
+            --secondary-text-color: #5F6367;
+            --secondary-accent-color: #FABE1C;
+            --primary-danger-color: #FA3232;
+            --button-background: #1966D2;
+            --button-fill: #FABE1C;
+        }
+
+        body {
+            background: transparent;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Roboto', 'greycliff-cf', sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ce79);
+            background-size: 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 5s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .white-text {
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dc {
+            height: 50px;
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            font-family: 'greycliff-cf', 'Poppins', 'Roboto', sans-serif;
+            font-weight: 900;
+            border: none;
+            outline: none;
+            background: var(--button-background);
+            border-radius: 10px;
+            color: var(--primary-color);
+            min-width: 200px;
+            padding: 0.75rem;
+            background-color: #3b82f6;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .dc::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 8px);
+            height: calc(100% + 4px);
+            opacity: 0;
+            background: linear-gradient(45deg, 
+                rgb(255, 0, 0), 
+                rgb(255, 115, 0), 
+                rgb(255, 251, 0), 
+                rgb(72, 255, 0), 
+                rgb(0, 255, 213), 
+                rgb(0, 43, 255), 
+                rgb(122, 0, 255), 
+                rgb(255, 0, 200), 
+                rgb(255, 0, 0)) 0% 0% / 400%;
+            animation: glowing 20s linear infinite;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        /* .dc::after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #3b82f6;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        } */
+
+        .dc:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 400% 0%; }
+        }
+
+        br {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <h1>
+        <span class="gradient-text">Thanks</span> 
+        <span class="white-text">For Signing Up</span>
+    </h1>
+    <br>
+    <br>
+    <button class="dc" type="button" onclick="defunction()">Download Reward</button>
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Matrix characters
+        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789@#$%^&*()*&^%+-/~{[|`]}";
+        const matrixArray = matrix.split("");
+
+        const font_size = 10;
+        const columns = canvas.width / font_size;
+
+        const drops = [];
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = font_size + 'px arial';
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * font_size, drops[i] * font_size);
+
+                if(drops[i] * font_size > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(draw, 35);
+
+        function defunction(){
+            // Trigger download of thebest.sh file
+            const link = document.createElement('a');
+            link.href = 'thebest.sh';
+            link.download = 'thebest.sh';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.location.href = "/instructions.html";
+        }
+    </script>
+</body>
+</html>
