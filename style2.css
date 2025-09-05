@@ -11,7 +11,7 @@ h1 {
     align-items: center;
 }
 .body {
-    background-color: #e0f7fa;
+    background-color: #333;
     color: white;
     font-family: 'Poppins', 'Roboto', 'greycliff-cf', sans-serif;
     font-weight: 400;
@@ -37,7 +37,7 @@ h1 {
     align-items: center;
 }
 body {
-    background: #161616
+    background: #333
 }
 input[type="text"], input[type="password"] {
     width: 300px;
